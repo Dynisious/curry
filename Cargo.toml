@@ -1,6 +1,6 @@
 [package]
 name = "curry"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["DMorgan <daniel.bechaz@gmail.com>"]
 edition = "2018"
 description = "Provides types for currying functions with up to 5 parameters."

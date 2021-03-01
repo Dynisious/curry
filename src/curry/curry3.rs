@@ -1,7 +1,7 @@
 //! Author --- DMorgan  
 //! Last Moddified --- 2021-03-01
 
-use super::*;
+use crate::*;
 use core::ops::CoerceUnsized;
 
 /// A curried ternary function.

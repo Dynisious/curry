@@ -1,4 +1,4 @@
-//! Provides types for currying functions with up to 5 parameters.
+//! Provides types for currying and uncurrying functions with up to 5 parameters.
 //! 
 //! Author --- DMorgan  
 //! Last Moddified --- 2021-03-01
@@ -12,12 +12,15 @@
 #[cfg(test,)]
 extern crate std;
 
-mod curry2;
-mod curry3;
-mod curry4;
-mod curry5;
+mod curry {
+  pub mod curry2;
+  pub mod curry3;
+  pub mod curry4;
+  pub mod curry5;
+}
+mod uncurry;
 
-pub use self::{curry2::*, curry3::*, curry4::*, curry5::*,};
+pub use self::{curry::{curry2::*, curry3::*, curry4::*, curry5::*,}, uncurry::*,};
 
 #[cfg(doctest,)]
 #[doc(include = "../README.md",)]
