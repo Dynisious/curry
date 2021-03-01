@@ -155,7 +155,7 @@ impl<T, U,> CoerceUnsized<Curry5<U,>> for Curry5<T,>
   where T: CoerceUnsized<U> + ?Sized,
     U: ?Sized, {}
 
-/// A closure making a quaternary function a unary function.
+/// A closure making a function of arity 5 a unary function.
 /// 
 /// ```rust
 /// use curry::*;

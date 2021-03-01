@@ -1,7 +1,7 @@
-//! Provides types for currying and uncurrying functions with up to 5 parameters.
+//! Provides types for currying and uncurrying functions with up to 6 parameters.
 //! 
 //! Author --- DMorgan  
-//! Last Moddified --- 2021-03-01
+//! Last Moddified --- 2021-03-02
 
 #![no_std]
 #![deny(missing_docs,)]
@@ -17,10 +17,11 @@ mod curry {
   pub mod curry3;
   pub mod curry4;
   pub mod curry5;
+  pub mod curry6;
 }
 mod uncurry;
 
-pub use self::{curry::{curry2::*, curry3::*, curry4::*, curry5::*,}, uncurry::*,};
+pub use self::{curry::{curry2::*, curry3::*, curry4::*, curry5::*, curry6::*,}, uncurry::*,};
 
 #[cfg(doctest,)]
 #[doc(include = "../README.md",)]

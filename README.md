@@ -1,26 +1,28 @@
 
 # Curry
 
-Provides types for currying and uncurrying functions with up to 5 parameters.
+Provides types for currying and uncurrying functions with up to 6 parameters.
 
 ```rust
 use curry::*;
 
-let f = Curry5(|a, b, c, d, e| a + b + c + d + e);
-assert_eq!(f(1, 2, 3, 4, 5), 15);
-assert_eq!(f(1, 2, 3, 4)(5), 15);
-assert_eq!(f(1, 2, 3)(4)(5), 15);
-assert_eq!(f(1, 2)(3)(4)(5), 15);
-assert_eq!(f(1)(2)(3)(4)(5), 15);
+let f = Curry6(|a, b, c, d, e, f| a + b + c + d + e + f);
+assert_eq!(f(1, 2, 3, 4, 5, 6), 21);
+assert_eq!(f(1, 2, 3, 4, 5)(6), 21);
+assert_eq!(f(1, 2, 3, 4)(5)(6), 21);
+assert_eq!(f(1, 2, 3)(4)(5)(6), 21);
+assert_eq!(f(1, 2)(3)(4)(5)(6), 21);
+assert_eq!(f(1)(2)(3)(4)(5)(6), 21);
 ```
 
 ```rust
 use curry::*;
 
-let f = Uncurry(|a| move |b| move |c| move |d| move |e| a + b + c + d + e);
-assert_eq!(f(1, 2, 3, 4, 5), 15);
-assert_eq!(f(1, 2, 3, 4)(5), 15);
-assert_eq!(f(1, 2, 3)(4)(5), 15);
-assert_eq!(f(1, 2)(3)(4)(5), 15);
-assert_eq!(f(1)(2)(3)(4)(5), 15);
+let f = Uncurry(|a| move |b| move |c| move |d| move |e| move |f| a + b + c + d + e + f);
+assert_eq!(f(1, 2, 3, 4, 5, 6), 21);
+assert_eq!(f(1, 2, 3, 4, 5)(6), 21);
+assert_eq!(f(1, 2, 3, 4)(5)(6), 21);
+assert_eq!(f(1, 2, 3)(4)(5)(6), 21);
+assert_eq!(f(1, 2)(3)(4)(5)(6), 21);
+assert_eq!(f(1)(2)(3)(4)(5)(6), 21);
 ```

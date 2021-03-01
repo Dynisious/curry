@@ -8,12 +8,13 @@ use core::ops::CoerceUnsized;
 /// ```rust
 /// use curry::*;
 /// 
-/// let f = Uncurry(|a| move |b| move |c| move |d| move |e| a + b + c + d + e);
-/// assert_eq!(f(1, 2, 3, 4, 5), 15);
-/// assert_eq!(f(1, 2, 3, 4)(5), 15);
-/// assert_eq!(f(1, 2, 3)(4)(5), 15);
-/// assert_eq!(f(1, 2)(3)(4)(5), 15);
-/// assert_eq!(f(1)(2)(3)(4)(5), 15);
+/// let f = Uncurry(|a| move |b| move |c| move |d| move |e| move |f| a + b + c + d + e + f);
+/// assert_eq!(f(1, 2, 3, 4, 5, 6), 21);
+/// assert_eq!(f(1, 2, 3, 4, 5)(6), 21);
+/// assert_eq!(f(1, 2, 3, 4)(5)(6), 21);
+/// assert_eq!(f(1, 2, 3)(4)(5)(6), 21);
+/// assert_eq!(f(1, 2)(3)(4)(5)(6), 21);
+/// assert_eq!(f(1)(2)(3)(4)(5)(6), 21);
 /// ```
 #[repr(transparent,)]
 #[derive(PartialEq, Eq, Clone, Copy, Default, Debug,)]
@@ -133,6 +134,38 @@ impl<A, B, C, D, E, F,> Fn<(A, B, C, D, E,)> for Uncurry<F,>
     <<F::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output: FnOnce<(D,)>,
     <<<F::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output: FnOnce<(E,)>, {
   extern "rust-call" fn call(&self, (a, b, c, d, e,): (A, B, C, D, E,),) -> Self::Output { (self.0)(a,)(b,)(c,)(d,)(e,) }
+}
+
+impl<A, B, C, D, E, F, G,> FnOnce<(A, B, C, D, E, F,)> for Uncurry<G,>
+  where G: FnOnce<(A,)>,
+    G::Output: FnOnce<(B,)>,
+    <G::Output as FnOnce<(B,)>>::Output: FnOnce<(C,)>,
+    <<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output: FnOnce<(D,)>,
+    <<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output: FnOnce<(E,)>,
+    <<<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output as FnOnce<(E,)>>::Output: FnOnce<(F,)>, {
+  type Output = <<<<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output as FnOnce<(E,)>>::Output as FnOnce<(F,)>>::Output;
+
+  extern "rust-call" fn call_once(self, (a, b, c, d, e, f,): (A, B, C, D, E, F,),) -> Self::Output { (self.0)(a,)(b,)(c,)(d,)(e,)(f,) }
+}
+
+impl<A, B, C, D, E, F, G,> FnMut<(A, B, C, D, E, F,)> for Uncurry<G,>
+  where G: FnMut<(A,)>,
+    G::Output: FnOnce<(B,)>,
+    <G::Output as FnOnce<(B,)>>::Output: FnOnce<(C,)>,
+    <<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output: FnOnce<(D,)>,
+    <<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output: FnOnce<(E,)>,
+    <<<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output as FnOnce<(E,)>>::Output: FnOnce<(F,)>, {
+  extern "rust-call" fn call_mut(&mut self, (a, b, c, d, e, f,): (A, B, C, D, E, F,),) -> Self::Output { (self.0)(a,)(b,)(c,)(d,)(e,)(f,) }
+}
+
+impl<A, B, C, D, E, F, G,> Fn<(A, B, C, D, E, F,)> for Uncurry<G,>
+  where G: Fn<(A,)>,
+    G::Output: FnOnce<(B,)>,
+    <G::Output as FnOnce<(B,)>>::Output: FnOnce<(C,)>,
+    <<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output: FnOnce<(D,)>,
+    <<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output: FnOnce<(E,)>,
+    <<<<G::Output as FnOnce<(B,)>>::Output as FnOnce<(C,)>>::Output as FnOnce<(D,)>>::Output as FnOnce<(E,)>>::Output: FnOnce<(F,)>, {
+  extern "rust-call" fn call(&self, (a, b, c, d, e, f,): (A, B, C, D, E, F,),) -> Self::Output { (self.0)(a,)(b,)(c,)(d,)(e,)(f,) }
 }
 
 impl<T, U,> CoerceUnsized<Uncurry<U,>> for Uncurry<T,>
