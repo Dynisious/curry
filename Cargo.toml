@@ -1,0 +1,11 @@
+[package]
+name = "curry"
+version = "0.1.0"
+authors = ["DMorgan <daniel.bechaz@gmail.com>"]
+edition = "2018"
+description = "Provides types for currying functions with up to 5 parameters."
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
